@@ -1,0 +1,14 @@
+DROP TABLE IF EXISTS CARDS;
+CREATE TABLE CARDS (
+ card_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+ customer_id INTEGER NOT NULL,
+ card_number VARCHAR(255) NOT NULL,
+ card_type VARCHAR(255) NOT NULL,
+ total_limit INTEGER NOT NULL,
+ amount_used INTEGER NOT NULL,
+ available_amount INTEGER NOT NULL,
+ create_dt DATE
+
+);
+
+
