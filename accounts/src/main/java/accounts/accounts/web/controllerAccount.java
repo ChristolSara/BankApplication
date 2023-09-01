@@ -16,8 +16,7 @@ public class controllerAccount {
     private  AccountRepository accountRepository;
 
     @PostMapping("/myAccount")
-    @ResponseBody
-    public Optional<Account> account(@RequestBody Customer customer){
+    public List<Account> account(@RequestBody Customer customer){
 
         return accountRepository.findByCustomerId(customer.getCustomerId());
     }
