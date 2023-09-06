@@ -5,13 +5,14 @@ import accounts.accounts.models.Customer;
 import accounts.accounts.repository.AccountRepository;
 import accounts.accounts.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@AllArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
 public class controllerCustomer {
 
     private CustomerRepository customerRepository;
