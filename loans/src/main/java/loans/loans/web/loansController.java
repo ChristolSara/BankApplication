@@ -28,8 +28,6 @@ public class loansController {
 
     @PostMapping("/loansList")
     public List<Loans> loansList(@RequestBody Customer customer){
-
-
         return loansRepository.findAllByCustomerId(customer.getCustomerId());
     }
 

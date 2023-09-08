@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  accounts:
+    image: saaraa/accounts:latest
+    mem_limit: 700m
+    ports:
+      - "8080:8080"
+    networks:
+      - BankApplication-network
+
+
+  cards:
+    image: saaraa/cards:latest
+    mem_limit: 700m
+    ports:
+      - "8090:8090"
+    networks:
+      - BankApplication-network
+
+
+  loans:
+    image: saaraa/loans:latest
+    mem_limit: 700m
+    ports:
+      - "9000:9000"
+    networks:
+      - BankApplication-network
+
+  configserver:
+    image: saaraa/configserver:latest
+    mem_limit: 700m
+    ports:
+      - "8071:8071"
+    networks:
+      - BankApplication-network
+networks:
+  BankApplication-network:

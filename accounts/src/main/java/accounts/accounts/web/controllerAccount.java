@@ -1,37 +1,37 @@
 package accounts.accounts.web;
 
+
 import accounts.accounts.config.AccountsServiceConfig;
 import accounts.accounts.models.Account;
 import accounts.accounts.models.Customer;
 import accounts.accounts.models.Properties;
 import accounts.accounts.repository.AccountRepository;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.io.JsonEOFException;
-//import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController @AllArgsConstructor @NoArgsConstructor
 public class controllerAccount {
 
+
     private  AccountRepository accountRepository;
-    @Autowired
-    AccountsServiceConfig accountsServiceConfig;
+    private AccountsServiceConfig accountsServiceConfig;
 
     @PostMapping("/myAccount")
-    public List<Account> account(@RequestBody Customer customer){
+    @ResponseBody
+    public List<Account> account(Customer customer) {
+        List<Account> accountList = accountRepository.findByCustomerId(customer.getCustomerId());
+        if (accountList != null) {
+            return accountList;
+        } else {
+            return null;
+        }
 
-        return accountRepository.findByCustomerId(customer.getCustomerId());
     }
 
 

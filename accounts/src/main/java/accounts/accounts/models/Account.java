@@ -20,6 +20,7 @@ public class Account {
     @Column(name = "create_dt")
     private LocalDate createDt;
 
+
     @Column(name = "customer_id")
     private int customerId;
 }
