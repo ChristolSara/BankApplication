@@ -12,8 +12,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @RefreshScope
 @ComponentScans({ @ComponentScan("com.jcb826.loans.controller")})
-@EnableJpaRepositories("com.jcb826.loans.repository")
-@EntityScan("com.jcb826.loans.model")
+@EnableJpaRepositories
+@EntityScan
 @SpringBootApplication
 public class LoansApplication {
 

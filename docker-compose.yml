@@ -14,7 +14,7 @@ services:
     image: saaraa/cards:latest
     mem_limit: 700m
     ports:
-      - "8090:8090"
+      - "9000:9000"
     networks:
       - BankApplication-network
 
@@ -23,7 +23,7 @@ services:
     image: saaraa/loans:latest
     mem_limit: 700m
     ports:
-      - "9000:9000"
+      - "8090:8090"
     networks:
       - BankApplication-network
 

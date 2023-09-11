@@ -11,20 +11,28 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@RestController @AllArgsConstructor @NoArgsConstructor
+@RestController
 public class controllerAccount {
 
 
-    private  AccountRepository accountRepository;
-    private AccountsServiceConfig accountsServiceConfig;
+
+    private final AccountRepository accountRepository;
+    private final AccountsServiceConfig accountsServiceConfig;
+
+    public controllerAccount(AccountRepository accountRepository, AccountsServiceConfig accountsServiceConfig) {
+        this.accountRepository = accountRepository;
+        this.accountsServiceConfig = accountsServiceConfig;
+    }
 
     @PostMapping("/myAccount")
     @ResponseBody
-    public List<Account> account(Customer customer) {
+    public List<Account> account(@RequestBody Customer customer) {
         List<Account> accountList = accountRepository.findByCustomerId(customer.getCustomerId());
         if (accountList != null) {
             return accountList;
@@ -37,7 +45,7 @@ public class controllerAccount {
 
     @GetMapping("/accounts")
     public List<Account> accountList(){
-        return accountRepository.findAll();
+        return (List<Account>) accountRepository.findAll();
     }
 
 

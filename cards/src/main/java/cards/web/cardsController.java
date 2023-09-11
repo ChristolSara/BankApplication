@@ -9,23 +9,24 @@ import cards.repository.CardsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@AllArgsConstructor @NoArgsConstructor
 public class cardsController {
 
-    private CardsRepository cardsRepository;
-    @Autowired
-     CardsServiceConfig cardsServiceConfig;
+    private final CardsRepository cardsRepository;
+
+     private final CardsServiceConfig cardsServiceConfig;
+
+    public cardsController(CardsRepository cardsRepository, CardsServiceConfig cardsServiceConfig) {
+        this.cardsRepository = cardsRepository;
+        this.cardsServiceConfig = cardsServiceConfig;
+    }
 
 
-   @PostMapping("/cardsList")
+    @PostMapping("/cardsList")
     public List<Cards> cardsList(@RequestBody Customer customer){
 
         return cardsRepository.findByCustomerId(customer.getCustomerId());

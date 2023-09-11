@@ -19,12 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor @NoArgsConstructor
+
 public class loansController {
 
-    private LoansRepository loansRepository;
-    @Autowired
-    private  LoansServiceConfig loansServiceConfig;
+    private final LoansRepository loansRepository;
+
+    private final LoansServiceConfig loansServiceConfig;
+
+    public loansController(LoansRepository loansRepository, LoansServiceConfig loansServiceConfig) {
+        this.loansRepository = loansRepository;
+        this.loansServiceConfig = loansServiceConfig;
+    }
 
     @PostMapping("/loansList")
     public List<Loans> loansList(@RequestBody Customer customer){
