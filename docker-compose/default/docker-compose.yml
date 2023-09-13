@@ -11,6 +11,17 @@ services:
       - BankApplication-network
 
 
+  eurekaserver:
+    image: saaraa/eurekaserver:latest
+    mem_limit: 700m
+    ports:
+      - "8070:8070"
+    networks:
+      - BankApplication-network
+    depends_on:
+      - configserver
+
+
   accounts:
     image: saaraa/accounts:latest
     mem_limit: 700m
@@ -20,15 +31,17 @@ services:
       - BankApplication-network
     depends_on:
       - configserver
+      - eurekaserver
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 5s
+        delay: 30s
         max_attempts: 3
         window: 120s
     environment:
       SPRING_PROFILES_ACTIVE: defaul
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
 
 
   cards:
@@ -40,15 +53,17 @@ services:
       - BankApplication-network
     depends_on:
       - configserver
+      - eurekaserver
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 5s
+        delay: 30s
         max_attempts: 3
         window: 120s
     environment:
       SPRING_PROFILES_ACTIVE: defaul
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
 
 
   loans:
@@ -60,15 +75,17 @@ services:
       - BankApplication-network
     depends_on:
       - configserver
+      - eurekaserver
     deploy:
       restart_policy:
         condition: on-failure
-        delay: 5s
+        delay: 30s
         max_attempts: 3
         window: 120s
     environment:
       SPRING_PROFILES_ACTIVE: defaul
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
 
 networks:
   BankApplication-network:
