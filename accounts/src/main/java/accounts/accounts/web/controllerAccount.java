@@ -1,10 +1,10 @@
 package accounts.accounts.web;
 
 
+import accounts.accounts.client.CardsFeignClient;
+import accounts.accounts.client.LoansFeignClient;
 import accounts.accounts.config.AccountsServiceConfig;
-import accounts.accounts.models.Account;
-import accounts.accounts.models.Customer;
-import accounts.accounts.models.Properties;
+import accounts.accounts.models.*;
 import accounts.accounts.repository.AccountRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,14 +20,17 @@ import java.util.List;
 @RestController
 public class controllerAccount {
 
-
-
-    private final AccountRepository accountRepository;
+ private final AccountRepository accountRepository;
     private final AccountsServiceConfig accountsServiceConfig;
 
-    public controllerAccount(AccountRepository accountRepository, AccountsServiceConfig accountsServiceConfig) {
+    private final LoansFeignClient loansFeignClient;
+    private final CardsFeignClient cardsFeignClient;
+
+    public controllerAccount(AccountRepository accountRepository, AccountsServiceConfig accountsServiceConfig, LoansFeignClient loansFeignClient, CardsFeignClient cardsFeignClient) {
         this.accountRepository = accountRepository;
         this.accountsServiceConfig = accountsServiceConfig;
+        this.loansFeignClient = loansFeignClient;
+        this.cardsFeignClient = cardsFeignClient;
     }
 
     @PostMapping("/myAccount")
@@ -40,6 +43,21 @@ public class controllerAccount {
             return null;
         }
 
+    }
+
+
+    @PostMapping("/myCustomerDetails")
+    public CustomerDetails myCustomerDetails(@RequestBody Customer customer){
+        List<Account> accounts =accountRepository.findByCustomerId(customer.getCustomerId());
+        List<Cards> Cards = cardsFeignClient.getCardsDetails(customer);
+        List<Loans> Loans = loansFeignClient.getLoansDetails(customer);
+
+        CustomerDetails customerDetails = new CustomerDetails();
+        customerDetails.setAccounts(accounts);
+        customerDetails.setLoans(Loans);
+        customerDetails.setCards(Cards);
+
+        return  customerDetails;
     }
 
 

@@ -31,7 +31,7 @@ public class loansController {
         this.loansServiceConfig = loansServiceConfig;
     }
 
-    @PostMapping("/loansList")
+    @PostMapping("/myLoans")
     public List<Loans> loansList(@RequestBody Customer customer){
         return loansRepository.findAllByCustomerId(customer.getCustomerId());
     }
