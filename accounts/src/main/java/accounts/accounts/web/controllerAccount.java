@@ -9,6 +9,7 @@ import accounts.accounts.repository.AccountRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -46,6 +47,7 @@ public class controllerAccount {
     }
 
 
+    @CircuitBreaker(name = "detailsForCustomerSupportApp")
     @PostMapping("/myCustomerDetails")
     public CustomerDetails myCustomerDetails(@RequestBody Customer customer){
         List<Account> accounts =accountRepository.findByCustomerId(customer.getCustomerId());
