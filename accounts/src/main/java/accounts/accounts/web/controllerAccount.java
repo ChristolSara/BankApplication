@@ -47,7 +47,9 @@ public class controllerAccount {
     }
 
 
-    @CircuitBreaker(name = "detailsForCustomerSupportApp")
+    //@CircuitBreaker(name = "detailsForCustomerSupportApp")
+    @CircuitBreaker(name = "detailsForCustomerSupportApp",fallbackMethod = "myCustomerDetailsFallBack")
+
     @PostMapping("/myCustomerDetails")
     public CustomerDetails myCustomerDetails(@RequestBody Customer customer){
         List<Account> accounts =accountRepository.findByCustomerId(customer.getCustomerId());
@@ -60,6 +62,23 @@ public class controllerAccount {
         customerDetails.setCards(Cards);
 
         return  customerDetails;
+    }
+
+
+    private CustomerDetails myCustomerDetailsFallBack( Customer customer,Throwable t){
+
+            List<Account> accountList = accountRepository.findByCustomerId(customer.getCustomerId());
+            List<Loans> loansList = loansFeignClient.getLoansDetails(customer);
+
+            CustomerDetails customerDetails=new CustomerDetails();
+            customerDetails.setAccounts(accountList);
+
+            customerDetails.setLoans(loansList);
+            return customerDetails;
+
+
+
+
     }
 
 
