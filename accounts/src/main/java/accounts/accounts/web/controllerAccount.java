@@ -10,12 +10,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
+import static org.bouncycastle.asn1.x500.style.RFC4519Style.name;
 
 
 @RestController
@@ -46,10 +50,11 @@ public class controllerAccount {
 
     }
 
-
+//test circuit breaker and retry patarn
     //@CircuitBreaker(name = "detailsForCustomerSupportApp")
-    @CircuitBreaker(name = "detailsForCustomerSupportApp",fallbackMethod = "myCustomerDetailsFallBack")
+    //@CircuitBreaker(name = "detailsForCustomerSupportApp",fallbackMethod = "myCustomerDetailsFallBack")
 
+    @Retry(name="retryForCustomerDetails",fallbackMethod = "myCustomerDetailsFallBack")
     @PostMapping("/myCustomerDetails")
     public CustomerDetails myCustomerDetails(@RequestBody Customer customer){
         List<Account> accounts =accountRepository.findByCustomerId(customer.getCustomerId());
@@ -75,12 +80,18 @@ public class controllerAccount {
 
             customerDetails.setLoans(loansList);
             return customerDetails;
+    }
+//tester rate limiter
 
-
-
-
+    @GetMapping("/sayHello")
+    @RateLimiter(name="sayHello",fallbackMethod = "sayHelloFallBack")
+    public String sayHello(){
+        return "hello to my App";
     }
 
+    private String sayHelloFallBack(){
+        return "hiiiiiii fallBack";
+    }
 
     @GetMapping("/accounts")
     public List<Account> accountList(){

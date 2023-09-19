@@ -1,6 +1,14 @@
 version: "3.8"
 
 services:
+  zipkin:
+    image: openzipkin/zipkin
+    mem_limit: 700m
+    ports:
+      - "9411:9411"
+    networks:
+      - BankApplication-network
+
 
   configserver:
     image: saaraa/configserver:latest
